@@ -132,6 +132,24 @@ npm run build    # Compile TypeScript
 npm start        # Run the compiled server (production)
 ```
 
+### API Reference
+
+Check the [Kitchen.co Developer Docs](https://developer.kitchen.co/) for the full API reference.
+
+### Testing with Claude Desktop
+
+After setup, try asking Claude:
+
+- "List all my clients"
+- "Show my boards"
+- "List invoices"
+
+### Adding More Resources
+
+1. Drop a new file in `src/resources/`
+2. Register it in `src/index.ts`
+3. Run `npm run build` from the project root
+
 ## License
 
 ISC
