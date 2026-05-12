@@ -114,7 +114,7 @@ The server reads credentials from your `.env` file automatically.
 
 ### Folders
 
-`list_folders` `show_folder` `create_folder` `update_folder` `delete_folder` `archive_folder` `restore_folder` `move_folder` `list_folder_children` `list_folder_files`
+`list_folders` `show_folder` `create_folder` `update_folder` `delete_folder` `archive_folder` `restore_folder` `move_folder` `list_folder_children` `list_folder_files` `add_folder_files`
 
 ### Docs
 
@@ -122,7 +122,7 @@ The server reads credentials from your `.env` file automatically.
 
 ### Files
 
-`show_file` `create_file_upload` `complete_file_upload` `delete_file`
+`show_file` `create_file_upload` `complete_file_upload` `delete_file` `add_folder_files`
 
 ### Embeds
 
