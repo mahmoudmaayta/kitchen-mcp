@@ -31,6 +31,29 @@ cp .env.example .env
 
 > The `.env` file is gitignored to keep your credentials safe.
 
+## File uploads
+
+Kitchen file uploads are a **three-step** flow: start the upload on the API, **PUT bytes** to the presigned `upload_url`, then finalize on the API.
+
+1. Use MCP **`create_file_upload`** with a `filename` — response includes `id` and **`upload_url`** (presigned; valid about **5 minutes** per [Kitchen create file](https://developer.kitchen.co/api/files/create-file)).
+2. **PUT the file bytes** to `upload_url` with the real **`Content-Type`** for that file. Do **not** send your Kitchen `Authorization` header on this request. From this repo you can run:
+
+   ```bash
+   node scripts/put-presigned-upload.mjs ./path/to/file.pdf "$UPLOAD_URL" application/pdf
+   ```
+
+   Or:
+
+   ```bash
+   npm run put-presigned -- ./path/to/file.pdf "$UPLOAD_URL" application/pdf
+   ```
+
+   The script streams from disk (no `KITCHEN_API_KEY` on the PUT), enforces Kitchen’s **5GB** size ceiling, and exits non-zero if the PUT fails. If `KITCHEN_BASE_URL` is set, the script refuses an `upload_url` that looks like your workspace URL (to catch copy-paste mistakes). If the PUT returns **403**, your URL may require extra headers (for example values implied by `X-Amz-SignedHeaders` in the query string); see Kitchen docs or use `curl` with the exact headers your presigner expects.
+
+3. Use MCP **`complete_file_upload`** with the file **`id`**, then optionally **`add_folder_files`** or other Kitchen APIs to attach the finalized file.
+
+Repo phase notes: [FILES-Phase1.md](FILES-Phase1.md), [FILES-Phase2.md](FILES-Phase2.md), [FILES-Phase3.md](FILES-Phase3.md).
+
 ## Usage
 
 ### With Claude Desktop
