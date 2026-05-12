@@ -222,4 +222,28 @@ export function registerFolderTools(server: McpServer, client: KitchenClient) {
       }
     }
   );
+
+  server.tool(
+    "add_folder_files",
+    "Attach one or more finalized Kitchen file IDs to a folder (POST /api/folders/{id}/files). Use only after create_file_upload, PUT bytes to upload_url, and complete_file_upload for each file. Returns an array of file objects. Per Kitchen docs, each file can be attached only once: after attaching to a folder it cannot be reused on a message, task comment, or another folder. Use list_folder_files to verify membership. Retrying the same attach may error; rely on API responses rather than assuming idempotency.",
+    {
+      id: z.string().describe("Folder ID"),
+      files: z
+        .array(z.string())
+        .min(1)
+        .describe("File IDs to attach (from complete_file_upload), at least one"),
+    },
+    async ({ id, files }) => {
+      try {
+        const result = await client.request({
+          method: "POST",
+          path: `/api/folders/${id}/files`,
+          body: { files },
+        });
+        return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (error) {
+        return { content: [{ type: "text" as const, text: formatError(error) }], isError: true };
+      }
+    }
+  );
 }
