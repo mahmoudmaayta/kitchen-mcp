@@ -122,7 +122,7 @@ The server reads credentials from your `.env` file automatically.
 
 ### Files
 
-`show_file` `delete_file`
+`show_file` `create_file_upload` `delete_file`
 
 ### Embeds
 

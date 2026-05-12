@@ -23,6 +23,26 @@ export function registerFileTools(server: McpServer, client: KitchenClient) {
   );
 
   server.tool(
+    "create_file_upload",
+    "Start a Kitchen file upload: returns a file id and a one-time presigned upload_url (valid about 5 minutes). This tool does not send file bytes. Next steps: (1) HTTP PUT the raw file bytes to upload_url with Content-Type set to the file's actual MIME type (do not send the Kitchen API Bearer token on that PUT; the URL is already signed). (2) After PUT succeeds, finalize with POST /api/files/{id}/complete per Kitchen docs (MCP may expose this as a separate tool later). Upload must be completed within 24 hours or it may be deleted.",
+    {
+      filename: z.string().describe("Name of the file to be uploaded (e.g. report.pdf)"),
+    },
+    async ({ filename }) => {
+      try {
+        const result = await client.request({
+          method: "POST",
+          path: "/api/files",
+          body: { filename },
+        });
+        return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      } catch (error) {
+        return { content: [{ type: "text" as const, text: formatError(error) }], isError: true };
+      }
+    }
+  );
+
+  server.tool(
     "delete_file",
     "DESTRUCTIVE: Permanently delete a file. This cannot be undone.",
     {
