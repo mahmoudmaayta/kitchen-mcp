@@ -108,6 +108,10 @@ The server reads credentials from your `.env` file automatically.
 
 `list_board_lists` `create_board_list` `show_list` `update_list` `delete_list`
 
+### Board labels
+
+`list_board_labels` `create_board_label` `update_board_label` `delete_board_label`
+
 ### Folders
 
 `list_folders` `show_folder` `create_folder` `update_folder` `delete_folder` `archive_folder` `restore_folder` `move_folder` `list_folder_children` `list_folder_files`
